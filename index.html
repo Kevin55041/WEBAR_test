@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入 A-Frame -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- 引入 MindAR for A-Frame -->
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    
+    <style>
+      body { margin: 0; overflow: hidden; }
+      /* 載入畫面簡單美化（可選） */
+      #scanning-overlay {
+        display: flex; align-items: center; justify-content: center;
+        position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); color: white; z-index: 2;
+      }
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+
+    <!-- MindAR 場景設定 -->
+    <!-- imageTargetSrc: 你的 target 檔名 -->
+    <!-- filterMinCF, filterBeta: 用來平滑追蹤，減少模型抖動 -->
+    <a-scene 
+      mindar-image="imageTargetSrc: targets.mind; filterMinCF:0.001; filterBeta: 0.01;" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+      
+      <a-assets>
+        <!-- 載入 3D 模型 -->
+        <a-asset-item id="taipei101Model" src="taipei_101.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- 追蹤錨點：targetIndex 指的是你 .mind 檔中的第幾個圖案（從 0 開始） -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!-- 放置台北 101 模型 -->
+        <!-- scale: 調整縮放大小 (x y z) -->
+        <!-- rotation: 調整旋轉角度 (x y z) -->
+        <!-- position: 調整位置 (x y z) -->
+        <a-gltf-model 
+          src="#taipei101Model" 
+          position="0 0 0" 
+          rotation="0 0 0" 
+          scale="0.05 0.05 0.05">
+        </a-gltf-model>
+      </a-entity>
+      
+    </a-scene>
+
+  </body>
+</html>
